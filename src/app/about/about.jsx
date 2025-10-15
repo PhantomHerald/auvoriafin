@@ -79,10 +79,12 @@ const About = () => {
         trigger: ".section.pin",
         start: "top top",
         end: "+=400%",
-        scrub: 1,
+        scrub: 1.5,
         anticipatePin: 1,
         pin: true,
         markers: false,
+       // force3D: true,
+        fastScrollEnd: true
       },
     });
 
