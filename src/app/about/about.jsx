@@ -363,7 +363,7 @@ const About = () => {
 
         <footer className="content absolute inset-0 h-screen flex flex-col justify-center items-center bg-black text-white text-center z-[1]">
           <h1 className="text-6xl font-bold mb-4">Footer</h1>
-          <p className="max-w-xl text-lg">i am tired; gotta make bank</p>
+          <p className="max-w-xl text-lg">i am tired; but gotta make bank</p>
           <p>open on desktop for better experience</p>
         </footer>
       </div>
