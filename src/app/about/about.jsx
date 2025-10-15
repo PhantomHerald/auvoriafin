@@ -24,72 +24,73 @@ const uncial = Uncial_Antiqua({
 const About = () => {
   const containerRef = useRef(null);
 
-useGSAP(() => {
-  const mm = gsap.matchMedia();
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
 
-  mm.add("(min-width: 768px)", () => {
-    // desktop & tablet animation
-    const decopara1 = new SplitText(".decopara1", { type: "lines, chars" });
-    const decosplit = new SplitText(".deco", { type: "lines, chars" });
-    const decopara2 = new SplitText(".decopara2", { type: "lines, chars" });
+    mm.add("(min-width: 768px)", () => {
+      // desktop & tablet animation
+      const decopara1 = new SplitText(".decopara1", { type: "lines, chars" });
+      const decosplit = new SplitText(".deco", { type: "lines, chars" });
+      const decopara2 = new SplitText(".decopara2", { type: "lines, chars" });
 
-    gsap.set([decosplit.chars, decopara1.chars, decopara2.chars], {
-      yPercent: 100,
-      opacity: 0,
+      gsap.set([decosplit.chars, decopara1.chars, decopara2.chars], {
+        yPercent: 100,
+        opacity: 0,
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".decocontainer",
+          start: "top 75%",
+          end: "bottom bottom",
+          scrub: 0.5,
+          markers: false,
+        },
+      });
+
+      tl.to([decosplit.chars, decopara1.chars, decopara2.chars], {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.5,
+        ease: "expo.out",
+        stagger: 0.02,
+      }).to(".decobuttons", { opacity: 1, duration: 0.5 }, "<0.3");
     });
 
-    const tl = gsap.timeline({
+    // Always fade in buttons on small screens (no split animation)
+    mm.add("(max-width: 767px)", () => {
+      gsap.to(".decobuttons", {
+        opacity: 1,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".decocontainer",
+          start: "top 80%",
+        },
+      });
+    });
+
+    // Always run this (for all screens)
+    gsap.to(".section.pin .overlay", {
+      yPercent: -100,
+      ease: "none",
+      borderRadius: "30px",
       scrollTrigger: {
-        trigger: ".decocontainer",
-        start: "top 75%",
-        end: "bottom bottom",
-        scrub: 0.5,
+        trigger: ".section.pin",
+        start: "top top",
+        end: "+=400%",
+        scrub: 1,
+        anticipatePin: 1,
+        pin: true,
         markers: false,
       },
     });
 
-    tl.to([decosplit.chars, decopara1.chars, decopara2.chars], {
-      yPercent: 0,
-      opacity: 1,
-      duration: 0.5,
-      ease: "expo.out",
-      stagger: 0.02,
-    }).to(".decobuttons", { opacity: 1, duration: 0.5 }, "<0.3");
-  });
+    console.clear();
+  }, []);
 
-  // Always fade in buttons on small screens (no split animation)
-  mm.add("(max-width: 767px)", () => {
-    gsap.to(".decobuttons", {
-      opacity: 1,
-      duration: 0.6,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".decocontainer",
-        start: "top 80%",
-      },
-    });
-  });
-
-  // Always run this (for all screens)
-  gsap.to(".section.pin .overlay", {
-    yPercent: -100,
-    ease: "none",
-    borderRadius: "30px",
-    scrollTrigger: {
-      trigger: ".section.pin",
-      start: "top top",
-      end: "+=100%",
-      scrub: true,
-      pin: true,
-      markers: false,
-    },
-  });
-
-  console.clear();
-}, []);
-
-    {
-      /*gsap.utils.toArray(".gallery-img").forEach((img) => {
+  {
+    /*gsap.utils.toArray(".gallery-img").forEach((img) => {
       gsap.fromTo(
         img,
         { scale: 1, rotate: 0 },
@@ -106,12 +107,11 @@ useGSAP(() => {
         }
       );
     });*/
-    }
-
+  }
 
   useEffect(() => {
     const buttons = document.querySelectorAll("button");
-    const strength = 40; // how "magnetic" the button feels
+    const strength = 90; // how "magnetic" the button feels
 
     buttons.forEach((btn) => {
       const moveButton = (e) => {
@@ -176,7 +176,7 @@ useGSAP(() => {
         className="section pin relative w-full h-screen overflow-hidden"
         ref={containerRef}
       >
-        <div className="overlay relative z-[2] bg-[#e8e4d9]">
+        <div className="overlay relative z-[2] bg-[#e8e4d9] will-change-transform">
           <Bounded>
             <div className="py-20">
               <h1
@@ -185,7 +185,7 @@ useGSAP(() => {
                 deco.
               </h1>
 
-              <div className="decocontainer grid grid-cols-[repeat(2,1fr)] grid-rows-[1fr] gap-y-[20px] gap-x-[70px]">
+              <div className="decocontainer grid grid-cols-1 md:grid-cols-2 gap-y-[20px] gap-x-[70px]">
                 <div>
                   <p
                     className={`${raleway.className} deco text-[clamp(20px,4vw,32px)]`}
@@ -242,7 +242,7 @@ useGSAP(() => {
                           backgroundPosition: "center",
                         }}
                       >
-                        {/* Dark overlay */}
+                        {/* dark overlay */}
                         <div className="absolute inset-0 bg-black/60"></div>
                         <span className="relative z-10">{label}</span>
                       </button>
@@ -252,35 +252,34 @@ useGSAP(() => {
               </div>
 
               <div className="gallerycontainer">
-                <div className="flex color-dark flex-row-reverse justify-between items-center mb-6">
+                <div className="flex color-dark flex-col md:flex-row-reverse justify-between items-start md:items-center mb-6 gap-4">
                   <h3
                     className={`${uncial.className} gallerytitle text-bold text-[clamp(65px,15vw,200px)] [text-shadow:0_4px_20px_rgba(0,0,0,0.4)] `}
                   >
                     gallery.
                   </h3>
-                  <div className="items-center flex md:top-20 relative gap-5 text-2xl top-7 ">
+                  <div className="items-center flex flex-wrap gap-3 sm:gap-5 text-2xl">
                     <a
                       href=""
-                      className={`${raleway.className} text-[clamp(20px,4vw,32px)]`}
+                      className={`${raleway.className} text-[clamp(20px,4vw,32px)] hover:opacity-70 transition-opacity`}
                     >
                       Classic
                     </a>
                     <a
                       href=""
-                      className={`${raleway.className} text-[clamp(20px,4vw,32px)]`}
+                      className={`${raleway.className} text-[clamp(20px,4vw,32px)] hover:opacity-70 transition-opacity`}
                     >
                       Village
                     </a>
                     <a
                       href=""
-                      className={`${raleway.className} text-[clamp(20px,4vw,32px)]`}
+                      className={`${raleway.className} text-[clamp(20px,4vw,32px)] hover:opacity-70 transition-opacity`}
                     >
                       Mini
                     </a>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-3 grid-rows-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {[
                     "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
                     "/jason-mavrommatis-kAOyHb6lagg-unsplash.jpg",
@@ -289,14 +288,18 @@ useGSAP(() => {
                     "/jason-mavrommatis-wpPi6_IIf-0-unsplash.jpg",
                     "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
                   ].map((src, i) => (
-                    <Image
+                    <div
                       key={i}
-                      className="rounded-3xl gallery-img"
-                      src={src}
-                      width={1200}
-                      height={1500}
-                      alt="img"
-                    />
+                      className="group relative overflow-hidden rounded-2xl lg:rounded-3xl aspect-[4/5] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+                    >
+                      <Image
+                        className="gallery-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        src={src}
+                        width={1200}
+                        height={1500}
+                        alt="img"
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -358,7 +361,8 @@ useGSAP(() => {
 
         <footer className="content absolute inset-0 h-screen flex flex-col justify-center items-center bg-black text-white text-center z-[1]">
           <h1 className="text-6xl font-bold mb-4">Footer</h1>
-          <p className="max-w-xl text-lg">footer content</p>
+          <p className="max-w-xl text-lg">i am tired; gotta make bank</p>
+          <p>open on desktop for better experience</p>
         </footer>
       </div>
     </section>
