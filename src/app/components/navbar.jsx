@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import React, { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { Raleway } from "next/font/google";
+import BookingModal from "./BookingModal";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -11,6 +12,7 @@ const raleway = Raleway({
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const panelRef = useRef(null);
 
   const toggleMenu = () => setOpen(!open);
@@ -119,7 +121,8 @@ const Navbar = () => {
 
         <div className="menucontainer flex items-center gap-4">
           <button
-            className={`${raleway.className} cursor-pointer bg-black text-white rounded-full px-6 py-3 text-[clamp(1rem,2vw,1.5rem)]`}
+            onClick={() => setIsModalOpen(true)}
+            className={`${raleway.className} cursor-pointer bg-black text-white rounded-full px-6 py-3 text-[clamp(1rem,2vw,1.5rem)] hover:bg-gray-800 transition`}
           >
             Book now
           </button>
@@ -191,6 +194,10 @@ const Navbar = () => {
           </div>
         </div>
       </aside>
+      <BookingModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
