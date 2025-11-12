@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar";
+import { BookingModalProvider } from "./context/BookingModalContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,8 +23,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children} <Navbar />
-        <div id="modal-root"></div>
+        <BookingModalProvider>
+          {children} <Navbar />
+          <div id="modal-root"></div>
+        </BookingModalProvider>
       </body>
     </html>
   );

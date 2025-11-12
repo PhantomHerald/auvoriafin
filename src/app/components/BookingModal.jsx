@@ -3,13 +3,15 @@ import React, { useState, useEffect } from "react";
 import { Raleway } from "next/font/google";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
+import { useBookingModal } from "../context/BookingModalContext";
 
 const raleway = Raleway({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
 
-const BookingModal = ({ isOpen, onClose }) => {
+const BookingModal = () => {
+  const { isOpen, closeModal } = useBookingModal();
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -74,7 +76,7 @@ const BookingModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     console.log("Booking Data:", formData);
     // Here you can send the data to your backend
-    onClose();
+    closeModal();
     // Reset form
     setFormData({
       name: "",
@@ -87,7 +89,7 @@ const BookingModal = ({ isOpen, onClose }) => {
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      closeModal();
     }
   };
 
@@ -104,7 +106,7 @@ const BookingModal = ({ isOpen, onClose }) => {
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={closeModal}
           className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 transition-colors text-2xl"
         >
           ×
@@ -241,7 +243,7 @@ const BookingModal = ({ isOpen, onClose }) => {
           <div className="flex gap-4 pt-6">
             <button
               type="button"
-              onClick={onClose}
+              onClick={closeModal}
               className={`${raleway.className} flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-gray-400 transition`}
             >
               Cancel

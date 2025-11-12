@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/all";
 import { Raleway } from "next/font/google";
 import { Uncial_Antiqua } from "next/font/google";
 import { SplitText } from "gsap/all";
+import { useBookingModal } from "../context/BookingModalContext";
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const raleway = Raleway({
@@ -23,36 +24,9 @@ const uncial = Uncial_Antiqua({
 });
 const About = () => {
   const containerRef = useRef(null);
-  const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    contact: "",
-    roomStyle: "Classic",
-  });
-  const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const modalRef = React.useRef(null);
-  const modalBgRef = React.useRef(null);
+  const { openModal } = useBookingModal();
 
   // animate modal in when showModal becomes true
-  useEffect(() => {
-    if (showModal && modalRef.current) {
-      gsap.fromTo(
-        modalBgRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.25 }
-      );
-
-      gsap.fromTo(
-        modalRef.current,
-        { y: 40, opacity: 0, scale: 0.98 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "power3.out" }
-      );
-    }
-  }, [showModal]);
-
   useGSAP(() => {
     const mm = gsap.matchMedia();
 
@@ -266,6 +240,7 @@ const About = () => {
                     ].map(({ label, img }, i) => (
                       <button
                         key={i}
+                        onClick={openModal}
                         className={`${raleway.className} decobuttons relative rounded-full cursor-pointer w-50 h-20 md:w-44 overflow-hidden text-white text-3xl tracking-wide opacity-0`}
                         style={{
                           backgroundImage: `url(${img})`,
@@ -300,13 +275,13 @@ const About = () => {
                       href=""
                       className={`${raleway.className} text-[clamp(20px,4vw,32px)] hover:opacity-70 transition-opacity`}
                     >
-                      Village
+                      Mini
                     </a>
                     <a
                       href=""
                       className={`${raleway.className} text-[clamp(20px,4vw,32px)] hover:opacity-70 transition-opacity`}
                     >
-                      Mini
+                      Village
                     </a>
                   </div>
                 </div>
@@ -379,219 +354,17 @@ const About = () => {
                 ))}
               </div>
 
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center mt-16">
                 <button
-                  className={`${raleway.className} cursor-pointer bg-black text-white text-2xl rounded-full w-64 h-20 mt-40 mb-20`}
-                  onClick={() => setShowModal(true)}
+                  onClick={openModal}
+                  className={`${raleway.className} cursor-pointer bg-black text-white text-2xl rounded-full px-8 py-4 hover:bg-gray-800 transition`}
                 >
                   Book now
                 </button>
               </div>
             </div>
 
-            {/* Booking modal */}
-            {showModal && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center">
-                <div
-                  ref={modalBgRef}
-                  className="absolute inset-0 bg-black/60"
-                  onClick={() => {
-                    // animate out then hide
-                    if (modalRef.current && modalBgRef.current) {
-                      gsap.to(modalRef.current, {
-                        y: 20,
-                        opacity: 0,
-                        scale: 0.98,
-                        duration: 0.28,
-                        ease: "power2.in",
-                      });
-                      gsap.to(modalBgRef.current, {
-                        opacity: 0,
-                        duration: 0.2,
-                        onComplete: () => setShowModal(false),
-                      });
-                    } else {
-                      setShowModal(false);
-                    }
-                  }}
-                />
-
-                <div
-                  ref={modalRef}
-                  className="relative bg-white rounded-xl w-full max-w-lg p-6 mx-4 shadow-lg"
-                >
-                  <h2 className={`${uncial.className} text-3xl mb-2`}>
-                    Book a room
-                  </h2>
-                  <p className={`${raleway.className} mb-4 text-sm`}>
-                    Please enter your details and preferred room style.
-                  </p>
-
-                  {submitted ? (
-                    <div className="p-4 bg-green-50 text-green-800 rounded">
-                      Thank you! Your booking request was received.
-                    </div>
-                  ) : (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        // simple validation
-                        const newErrors = {};
-                        if (!form.name.trim())
-                          newErrors.name = "Name is required";
-                        if (!form.surname.trim())
-                          newErrors.surname = "Surname is required";
-                        if (!form.contact.trim())
-                          newErrors.contact = "Contact number is required";
-                        if (!form.email.trim())
-                          newErrors.email = "Email is required";
-                        else if (
-                          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                            form.email
-                          )
-                        )
-                          newErrors.email = "Enter a valid email";
-
-                        setErrors(newErrors);
-                        if (Object.keys(newErrors).length === 0) {
-                          // Simulate submission
-                          console.log("Booking request:", form);
-                          setSubmitted(true);
-                          setTimeout(() => {
-                            setShowModal(false);
-                            setSubmitted(false);
-                            setForm({
-                              name: "",
-                              surname: "",
-                              email: "",
-                              contact: "",
-                              roomStyle: "Classic",
-                            });
-                          }, 1500);
-                        }
-                      }}
-                    >
-                      <div className="grid grid-cols-1 gap-3">
-                        <div>
-                          <label className="block text-sm">Name</label>
-                          <input
-                            className="w-full border rounded px-3 py-2 mt-1"
-                            value={form.name}
-                            onChange={(e) =>
-                              setForm({ ...form, name: e.target.value })
-                            }
-                          />
-                          {errors.name && (
-                            <div className="text-sm text-red-600">
-                              {errors.name}
-                            </div>
-                          )}
-                        </div>
-
-                        <div>
-                          <label className="block text-sm">Surname</label>
-                          <input
-                            className="w-full border rounded px-3 py-2 mt-1"
-                            value={form.surname}
-                            onChange={(e) =>
-                              setForm({ ...form, surname: e.target.value })
-                            }
-                          />
-                          {errors.surname && (
-                            <div className="text-sm text-red-600">
-                              {errors.surname}
-                            </div>
-                          )}
-                        </div>
-
-                        <div>
-                          <label className="block text-sm">Email</label>
-                          <input
-                            className="w-full border rounded px-3 py-2 mt-1"
-                            value={form.email}
-                            onChange={(e) =>
-                              setForm({ ...form, email: e.target.value })
-                            }
-                            type="email"
-                          />
-                          {errors.email && (
-                            <div className="text-sm text-red-600">
-                              {errors.email}
-                            </div>
-                          )}
-                        </div>
-
-                        <div>
-                          <label className="block text-sm">
-                            Contact number
-                          </label>
-                          <input
-                            className="w-full border rounded px-3 py-2 mt-1"
-                            value={form.contact}
-                            onChange={(e) =>
-                              setForm({ ...form, contact: e.target.value })
-                            }
-                          />
-                          {errors.contact && (
-                            <div className="text-sm text-red-600">
-                              {errors.contact}
-                            </div>
-                          )}
-                        </div>
-
-                        <div>
-                          <label className="block text-sm">Room style</label>
-                          <select
-                            className="w-full border rounded px-3 py-2 mt-1"
-                            value={form.roomStyle}
-                            onChange={(e) =>
-                              setForm({ ...form, roomStyle: e.target.value })
-                            }
-                          >
-                            <option>Classic</option>
-                            <option>Mini</option>
-                            <option>Village</option>
-                          </select>
-                        </div>
-
-                        <div className="flex justify-end gap-3 mt-2">
-                          <button
-                            type="button"
-                            className="px-4 py-2 rounded bg-gray-200"
-                            onClick={() => {
-                              if (modalRef.current && modalBgRef.current) {
-                                gsap.to(modalRef.current, {
-                                  y: 20,
-                                  opacity: 0,
-                                  scale: 0.98,
-                                  duration: 0.28,
-                                  ease: "power2.in",
-                                });
-                                gsap.to(modalBgRef.current, {
-                                  opacity: 0,
-                                  duration: 0.2,
-                                  onComplete: () => setShowModal(false),
-                                });
-                              } else {
-                                setShowModal(false);
-                              }
-                            }}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            type="submit"
-                            className="px-4 py-2 rounded bg-black text-white"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  )}
-                </div>
-              </div>
-            )}
+            {/* Gallery section */}
           </Bounded>
         </div>
 
