@@ -9,6 +9,7 @@ import { Raleway } from "next/font/google";
 import { Uncial_Antiqua } from "next/font/google";
 import { SplitText } from "gsap/all";
 import { useBookingModal } from "../context/BookingModalContext";
+import { Suspense } from "react";
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const raleway = Raleway({
@@ -285,6 +286,8 @@ const About = () => {
                     </a>
                   </div>
                 </div>
+                <Suspense fallback={<div className="flex justify-center items-center text-3xl text-black">Loading gallery...</div>}>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {[
                     "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
@@ -295,8 +298,8 @@ const About = () => {
                     "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
                   ].map((src, i) => (
                     <div
-                      key={i}
-                      className="group relative overflow-hidden rounded-2xl lg:rounded-3xl aspect-[4/5] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+                    key={i}
+                    className="group relative overflow-hidden rounded-2xl lg:rounded-3xl aspect-[4/5] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
                     >
                       <Image
                         className="gallery-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -304,10 +307,11 @@ const About = () => {
                         width={1200}
                         height={1500}
                         alt="img"
-                      />
+                        />
                     </div>
                   ))}
                 </div>
+                  </Suspense>
               </div>
             </div>
 

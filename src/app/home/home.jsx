@@ -33,7 +33,7 @@ export default function Home() {
       width: "100vw",
       height: "100vh",
       bottom: "0",
-      scale: 1.5,
+      scale: 1.2,
       duration: 3,
       objectFit: "contain",
 
