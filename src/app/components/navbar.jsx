@@ -25,7 +25,7 @@ const Navbar = () => {
     setMounted(true);
   }, []);
 
-  // Close menu when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -181,7 +181,7 @@ const Navbar = () => {
         className="menupanel fixed top-0 right-0 h-full w-[85%] sm:w-[70%] md:w-[60%] bg-[#b6ab87] flex flex-col justify-between p-[4em_1.5em_2em_1.5em] md:p-[6em_2em_2em_2em] overflow-y-auto z-30 backdrop-blur-[12px] rounded-l-[10%] translate-x-full"
         aria-hidden={!open}
       >
-        {/* Menu links */}
+    
         <div className="flex-1 flex flex-col gap-5">
           <ul className="list-none m-0 p-0 flex flex-col gap-3">
             {["Home", "About", "Our Location", "Contact"].map((text, i) => (
@@ -201,7 +201,7 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Socials Section */}
+    
         <div className="socialscontainer flex justify-end pr-[5%] sm:pr-[10%]">
           <div className="socials flex flex-col items-end text-right">
             <h3

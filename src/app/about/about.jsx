@@ -249,7 +249,7 @@ const About = () => {
                           backgroundPosition: "center",
                         }}
                       >
-                        {/* dark overlay */}
+                        
                         <div className="absolute inset-0 bg-black/60"></div>
                         <span className="relative z-10">{label}</span>
                       </button>

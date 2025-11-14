@@ -75,9 +75,9 @@ const BookingModal = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Booking Data:", formData);
-    // Here you can send the data to your backend
+   
     closeModal();
-    // Reset form
+    
     setFormData({
       name: "",
       surname: "",
@@ -104,7 +104,7 @@ const BookingModal = () => {
         className="modal-content bg-white rounded-lg shadow-2xl p-8 md:p-12 w-full max-w-2xl mx-4 opacity-0 scale-90"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
+      
         <button
           onClick={closeModal}
           className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 transition-colors text-2xl"
@@ -112,7 +112,7 @@ const BookingModal = () => {
           ×
         </button>
 
-        {/* Header */}
+       
         <h2
           className={`${raleway.className} text-3xl md:text-4xl font-bold text-gray-900 mb-2`}
         >
@@ -122,9 +122,9 @@ const BookingModal = () => {
           Fill in your details to reserve your perfect room at Auvoria
         </p>
 
-        {/* Form */}
+       
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Name and Surname Row */}
+         
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label
@@ -165,7 +165,7 @@ const BookingModal = () => {
             </div>
           </div>
 
-          {/* Email */}
+          
           <div>
             <label
               htmlFor="email"
@@ -185,7 +185,7 @@ const BookingModal = () => {
             />
           </div>
 
-          {/* Contact Number */}
+      
           <div>
             <label
               htmlFor="contactNumber"
@@ -205,7 +205,7 @@ const BookingModal = () => {
             />
           </div>
 
-          {/* Room Style Selection */}
+        
           <div>
             <label
               className={`${raleway.className} block text-sm font-semibold text-gray-700 mb-4`}
@@ -239,7 +239,7 @@ const BookingModal = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
+        
           <div className="flex gap-4 pt-6">
             <button
               type="button"
