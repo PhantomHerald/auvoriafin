@@ -33,9 +33,8 @@ export default function Home() {
       width: "100vw",
       height: "100vh",
       bottom: "0",
-      scale: 1.2,
+      scale: 1,
       duration: 3,
-      objectFit: "contain",
 
       scrollTrigger: {
         trigger: ".img-container",

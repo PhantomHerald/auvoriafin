@@ -286,32 +286,37 @@ const About = () => {
                     </a>
                   </div>
                 </div>
-                <Suspense fallback={<div className="flex justify-center items-center text-3xl text-black">Loading gallery...</div>}>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                  {[
-                    "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
-                    "/jason-mavrommatis-kAOyHb6lagg-unsplash.jpg",
-                    "/jason-mavrommatis-pF1cl6h6Y2c-unsplash.jpg",
-                    "/jason-mavrommatis-pF1cl6h6Y2c-unsplash.jpg",
-                    "/jason-mavrommatis-wpPi6_IIf-0-unsplash.jpg",
-                    "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
-                  ].map((src, i) => (
-                    <div
-                    key={i}
-                    className="group relative overflow-hidden rounded-2xl lg:rounded-3xl aspect-[4/5] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
-                    >
-                      <Image
-                        className="gallery-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        src={src}
-                        width={1200}
-                        height={1500}
-                        alt="img"
-                        />
+                <Suspense
+                  fallback={
+                    <div className="flex justify-center items-center text-3xl text-black">
+                      Loading gallery...
                     </div>
-                  ))}
-                </div>
-                  </Suspense>
+                  }
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                    {[
+                      "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
+                      "/jason-mavrommatis-kAOyHb6lagg-unsplash.jpg",
+                      "/jason-mavrommatis-pF1cl6h6Y2c-unsplash.jpg",
+                      "/jason-mavrommatis-pF1cl6h6Y2c-unsplash.jpg",
+                      "/jason-mavrommatis-wpPi6_IIf-0-unsplash.jpg",
+                      "/jason-mavrommatis-w8fxphMz6Zs-unsplash.jpg",
+                    ].map((src, i) => (
+                      <div
+                        key={i}
+                        className="group relative overflow-hidden rounded-2xl lg:rounded-3xl aspect-[4/5] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+                      >
+                        <Image
+                          className="gallery-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          src={src}
+                          width={1200}
+                          height={1500}
+                          alt="img"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </Suspense>
               </div>
             </div>
 
@@ -333,14 +338,14 @@ const About = () => {
 
               <div className="grid grid-cols-4 grid-rows-2 mx-auto  w-full max-w-[1400px] h-[700px]">
                 {[
-                  { icon: "📶", label: "Internet access" },
-                  { icon: "❄️", label: "Air conditioning" },
-                  { icon: "🌡️", label: "Heating" },
-                  { icon: "🍴", label: "Kitchen" },
-                  { icon: "📺", label: "Flat TV" },
-                  { icon: "🏠", label: "Balcony" },
-                  { icon: "🏖️", label: "Beach access" },
-                  { icon: "🧺", label: "Washing machine" },
+                  { label: "Internet access" },
+                  { label: "Air conditioning" },
+                  { label: "Heating" },
+                  { label: "Kitchen" },
+                  { label: "Flat TV" },
+                  { label: "Balcony" },
+                  { label: "Beach access" },
+                  { label: "Washing machine" },
                 ].map((item, i) => (
                   <div
                     key={i}

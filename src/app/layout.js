@@ -24,7 +24,8 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <BookingModalProvider>
-          {children} <Navbar />
+          {children}
+          <Navbar />
           <div id="modal-root"></div>
         </BookingModalProvider>
       </body>

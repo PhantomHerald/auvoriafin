@@ -1,6 +1,7 @@
 "use client";
 import { useGSAP } from "@gsap/react";
 import React, { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { Raleway } from "next/font/google";
 import BookingModal from "./BookingModal";
@@ -13,10 +14,37 @@ const raleway = Raleway({
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { openModal } = useBookingModal();
   const panelRef = useRef(null);
+  const navbarRef = useRef(null);
 
   const toggleMenu = () => setOpen(!open);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        open &&
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
 
   useGSAP(() => {
     if (open) {
@@ -111,8 +139,11 @@ const Navbar = () => {
     });
   }, []);
 
-  return (
-    <div className="top-0 left-0 overflow-hidden overflow-x-hidden">
+  const navbarContent = (
+    <div
+      ref={navbarRef}
+      className="top-0 left-0 overflow-hidden overflow-x-hidden"
+    >
       <header className="fixed top-0 left-0 w-full flex justify-between items-center p-6 md:p-10 bg-transparent z-50">
         <h1
           className={`${raleway.className} text-[clamp(1.5rem,4vw,2.5rem)] font-bold`}
@@ -198,6 +229,10 @@ const Navbar = () => {
       <BookingModal />
     </div>
   );
+
+  if (!mounted) return null;
+
+  return createPortal(navbarContent, document.body);
 };
 
 export default Navbar;
